@@ -1,14 +1,15 @@
 const express = require('express')
 const router = express.Router()
-const Info = require('../models/user')
-const infoController = require('../Controllers/info-controller')
+const User = require('../models/user')
+const userController = require('../Controllers/user-controller')
 
 
 
-router.get('/',infoController.getAllinfo)
-router.get('/:id',infoController.getSingleinfo)
-router.post('/',infoController.addinfo)
-router.delete('/:id',infoController.deleteinfo)
-router.patch('/:id',infoController.updateinfo)
+router.get('/',userController.getAllinfo)
+router.get('/:id',userController.getSingleinfo)
+router.post('/',userController.addinfo)
+router.delete('/:id',userController.deleteinfo)
+router.patch('/:id',userController.updateinfo)
+router.post('/register',userController.userRegister)
 
 module.exports = router

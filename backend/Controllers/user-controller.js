@@ -1,9 +1,19 @@
-const Info = require('../models/user')
+const {User}= require('../models/user')
 
 module.exports = {
+    userRegister:async(req,res)=>{
+        try{
+            const user = new User(req.body)
+            const userdata = await user.save()
+            res.json({success:true,userdata,message:"User Created successfully"})
+        }
+        catch(err){
+            res.json({success:false,err})
+        }
+    },
     getAllinfo:async(req,res)=>{
         try{
-            const infoo = await Info.find()
+            const infoo = await User.find()
             res.send(infoo)
             console.log(infoo)
         }catch(err){
@@ -12,7 +22,7 @@ module.exports = {
     },
     getSingleinfo:async(req,res)=>{
         try{
-            const infoo = await Info.findById(req.params.id)
+            const infoo = await User.findById(req.params.id)
             res.json(infoo)
         }catch(err){
             res.send('Error ' + err)
@@ -20,7 +30,7 @@ module.exports = {
     },
     deleteinfo:async(req,res)=>{
         try {
-            const infoo = await Info.findById(req.params.id)
+            const infoo = await User.findById(req.params.id)
             const a1 = await infoo.remove()
             res.send('success')
         } catch (err) {
@@ -32,7 +42,7 @@ module.exports = {
             const id = req.params.id
             const data = req.body
             const options = {new:true}
-            const result = await Info.findByIdAndUpdate(id,data,options)
+            const result = await User.findByIdAndUpdate(id,data,options)
             res.send(result)
         } catch (error) {
             res.send(error)
@@ -40,7 +50,7 @@ module.exports = {
     },
     addinfo:async(req,res)=>{
         try {
-            const infoo = new Info(req.body)
+            const infoo = new User(req.body)
             const a1= await infoo.save()
             res.send(a1)
         } catch (err) {
