@@ -24,7 +24,21 @@ const UserSchema = new mongoose.Schema({
     },
     tokenExp:{
         type:Number
-    }
+    },
+    bio:{
+        type:String
+    },
+    location:{
+        type:String
+    },
+    phone:{
+        type:Number
+    },
+    image:{
+        type:String
+    },
+    products:[{type:mongoose.Schema.Types.ObjectId,
+    ref:'Product'}]
 })
 
 const User = mongoose.model('User',UserSchema)

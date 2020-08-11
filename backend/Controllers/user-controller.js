@@ -3,7 +3,6 @@ const bcrype = require('bcrypt')
 const jwt = require('jsonwebtoken')
 module.exports = {
     userRegister:async(req,res)=>{
-
         try{
             const {name,email,password} = req.body
             const p = await bcrype.hash(password,12)
@@ -24,7 +23,7 @@ module.exports = {
                 if (compare) {
                     const token = jwt.sign({_id:user._id},'JWT_SECRET')
                     user.token=token
-                    res.cookie("x_auth",user.token)
+                    res.cookie("x_auth",user.token,{HttpOnly:true})
                     const userdata = await user.save()
                     
                     res.json({success:true,message:"you are logged in",userdata:userdata,token})
@@ -57,6 +56,14 @@ module.exports = {
             res.send(error)
         }
     },
+    currenuser:async(req,res)=>{
+        try {
+            const user = await User.findOne({_id:req.user.id}).populate('products')
+            res.json({user})
+        } catch (error) {
+            res.json({error})
+        }
+    },
     getAllinfo:async(req,res,next)=>{
         console.log(req.user)
 
@@ -70,10 +77,10 @@ module.exports = {
             res.send('Error ' + err)
         }
     },
-    getSingleinfo:async(req,res)=>{
+    getSingleuser:async(req,res)=>{
         try{
-            const infoo = await User.findById(req.params.id)
-            res.json(infoo)
+            const user = await User.findById(req.params.id)
+            res.json(user)
         }catch(err){
             res.send('Error ' + err)
         }
